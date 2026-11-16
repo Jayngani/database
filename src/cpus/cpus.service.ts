@@ -33,13 +33,14 @@ export class CpusService {
     return rows[0];
   }
 
-  async createCpus(id: number, type_amd: string, type_intel: string) {
-  const [result] = await this.pool.execute<OkPacket>(
-    'INSERT INTO cpus (type_amd, type_intel) VALUES (?, ?)',
-    [type_amd, type_intel]
-  );
-  return { id: result.insertId, type_amd, type_intel };
-}
+  // ✅ Fixed: removed the unused `id` parameter
+  async createCpus(type_amd: string, type_intel: string) {
+    const [result] = await this.pool.execute<OkPacket>(
+      'INSERT INTO cpus (type_amd, type_intel) VALUES (?, ?)',
+      [type_amd, type_intel]
+    );
+    return { id: result.insertId, type_amd, type_intel };
+  }
 
   async updateCpus(id: number, data: {
     type_amd?: string;
